@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>title</title>
+    <link href="style.css" rel="stylesheet">
+  </head>
+  <body class="cs25">
+    <div class="header">
+      <div class="title_bar">
+        <div class="title_area">
+          <span class="title">テトリス</span>
+        </div>
+        <div class="icon_wrap" title="ゲームログ" id="game_over_show">
+          <div class="iconData icon">
+            <div class="iconData_outer_rect"></div>
+            <div class="iconData_inner_rect"></div>
+            <div class="iconData_stick top"></div>
+            <div class="iconData_stick middle"></div>
+            <div class="iconData_stick bottom"></div>
+            
+          </div>
+        </div>
+        <div class="icon_wrap" title="リセット" id="reset">
+          <div class="iconReset icon">
+            <div class="iconReset_outer_circle"></div>
+            <div class="iconReset_inner_circle"></div>
+            <div class="iconReset_inner_fan"></div>
+            <div class="iconReset_triangle"></div>
+          </div>
+        </div>
+        <div class="icon_wrap" title="開始" id="start">
+          <div class="iconPlay icon">
+            <div class="iconPlay_triangle"></div>
+          </div>
+        </div>
+        <div class="icon_wrap" title="一時停止" id="pause">
+          <div class="iconPause icon">
+            <div class="iconPause_stick_left"></div>
+            <div class="iconPause_stick_right"></div>
+          </div>
+        </div>
+        <div class="icon_wrap" title="再開" id="resume">
+          <div class="iconPlay icon">
+            <div class="iconPlay_triangle"></div>
+          </div>
+        </div>
+        <div class="icon_wrap" title="設定" id="setting">
+          <div class="iconGear icon">
+            <div class="iconGear_stick"></div>
+            <div class="iconGear_stick rotate45"></div>
+            <div class="iconGear_stick rotate90"></div>
+            <div class="iconGear_stick rotate-45"></div>
+            <div class="iconGear_round1"></div>
+            <div class="iconGear_round2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+
+      <div class="game_area">
+        <div class="main">
+          <div class="holds_wrapper" id="holds_wrapper">
+            <div class="holds">hold</div>
+            <div class="hold_wrapper">
+              <div class="hold" id="hold"></div>
+            </div>
+          </div>
+          <div class="info_wrapper" id="info_wrapper">
+            <div class="level_wrapper">
+              <div class="">消したライン数</div>
+              <div class="level" id="deleted_line_number">0</div>
+            </div>
+            <div class="level_wrapper">
+              <div class="">現在のレベル</div>
+              <div class="level" id="level">1</div>
+            </div>
+            <div class="score_wrapper">
+              <div class="">現在のスコア</div>
+              <div class="score" id="score">0</div>
+            </div>
+            <div class="time_label" id="time_label">00:00:00.000</div>
+          </div>
+          <div class="field" id="field">
+            <div class="content" id="content">
+              
+            </div>
+          </div>
+          <div class="nexts_wrapper" id="nexts_wrapper">
+            <div class="next_label">next</div>
+            <div class="next_wrapper">
+              <div class="next" id="next1"></div>
+            </div>
+            <div class="next_wrapper">
+              <div class="next" id="next2"></div>
+            </div>
+            <div class="next_wrapper">
+              <div class="next" id="next3"></div>
+            </div>
+            <div class="next_wrapper">
+              <div class="next" id="next4"></div>
+            </div>
+            <div class="next_wrapper">
+              <div class="next" id="next5"></div>
+            </div>
+            <div class="next_wrapper">
+              <div class="next" id="next6"></div>
+            </div>
+          </div>
+          <div class="pause_wrapper" id="pause_wrapper">
+            <div class="pause_label">一時停止中です。再開後は 5 秒間一時停止できません。</div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="footer">
+      <span class="message" id="message"></span>
+    </div>
+    <div class="setting_wrap" id="setting_wrap">
+      <div class="setting_area tab1" id="setting_area">
+        <div class="setting_tab_area" id="setting_tab_area">
+          <div class="setting_tab tab1" id="tab1">
+            表示設定
+          </div>
+          <div class="setting_tab tab2" id="tab2">
+            ルール設定
+          </div>
+          <div class="setting_tab tab3" id="tab3">
+            キー設定
+          </div>
+        </div>
+        <div class="setting_close_area">
+
+        </div>
+        <div class="setting_body tab1">
+            <div class="item_title">
+              マスのサイズ:
+            </div>
+            <div class="item_body">
+              <select id="cell_size">
+                <option value="2">2px</option>
+                <option value="4">4px</option>
+                <option value="6">6px</option>
+                <option value="9">9px</option>
+                <option value="12">12px</option>
+                <option value="16">16px</option>
+                <option value="20">20px</option>
+                <option value="25" selected>25px</option>
+                <option value="30">30px</option>
+                <option value="36">36px</option>
+                <option value="45">45px</option>
+                <option value="60">60px</option>
+                
+              </select>
+            </div>
+            <div class="item_title">
+              経過時間表示:
+            </div>
+            <div class="item_body">
+              <input type="checkbox" id="setting_time_display" checked>
+              <label for="setting_time_display">表示</label>
+            </div>
+            <div class="item_title">
+              next表示数:
+            </div>
+            <div class="item_body">
+              <select id="next_display_number">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6" selected>6</option>
+              </select>
+            </div>
+            <div class="item_title">
+              ゴースト表示:
+            </div>
+            <div class="item_body">
+              <input type="checkbox" id="setting_ghost_display" checked>
+              <label for="setting_ghost_display">表示</label>
+            </div>
+        </div>
+        <div class="setting_body tab2">
+          <div class="item_title">
+            初期レベル:
+          </div>
+          <div class="item_body">
+            <input type="number" value="1" id="initial_level">
+          </div>
+          <div class="item_title">
+            レベル増加:
+          </div>
+          <div class="item_body">
+            <input type="number" value="10" min="1" step="1" id="level_up_line_number">段 消すごと
+          </div>
+          <div class="item_title">
+            初期落下時間:
+          </div>
+          <div class="item_body">
+            <input type="number" value="1000" min="0" id="initial_drop_time">ミリ秒
+          </div>
+          <div class="item_title">
+            落下時間減少:
+          </div>
+          <div class="item_body">
+            <input type="radio" name="decrease" id="opt_decrease_num"><label for="opt_decrease_num">1レベル上昇で <input type="number" value="100" id="time_decrease_num">ミリ秒 減少</label>
+          </div>
+          <div class="item_title">
+            
+          </div>
+          <div class="item_body">
+            <input type="radio" name="decrease" id="opt_decrease_multi" checked><label for="opt_decrease_multi">1レベル上昇で <input type="number" value="20" min="0" max="100" id="time_decrease_multi">% 減少</label>
+          </div>
+          <div class="item_title">
+            ソフトドロップスコア:
+          </div>
+          <div class="item_body">
+            1段ごとに <input type="number" value="1" id="soft_drop_score">
+          </div>
+          <div class="item_title">
+            ハードドロップスコア:
+          </div>
+          <div class="item_body">
+            1段ごとに <input type="number" value="2" id="hard_drop_score">
+          </div>
+          <div class="item_title">
+            1段消しスコア:
+          </div>
+          <div class="item_body">
+            <input type="number" value="0" id="single_score_base"> + (レベル × <input type="number" value="100" id="single_score_multi">)
+          </div>
+          <div class="item_title">
+            2段消しスコア:
+          </div>
+          <div class="item_body">
+            <input type="number" value="0" id="double_score_base"> + (レベル × <input type="number" value="300" id="double_score_multi">)
+          </div>
+          <div class="item_title">
+            3段消しスコア:
+          </div>
+          <div class="item_body">
+            <input type="number" value="0" id="triple_score_base"> + (レベル × <input type="number" value="500" id="triple_score_multi">)
+          </div>
+          <div class="item_title">
+            4段消しスコア:
+          </div>
+          <div class="item_body">
+            <input type="number" value="0" id="tetris_score_base"> + (レベル × <input type="number" value="800" id="tetris_score_multi">)
+          </div>
+          
+          
+        </div>
+        <div class="setting_body tab3" id="key_setting_body">
+          <div class="item_title">
+            左移動
+          </div>
+          <div class="item_body">
+            <input class="key_list" type="text" value="a" readonly id="setting_left_move">
+            <input class="key_register" type="button" value="追加登録">
+            <input class="key_delete" type="button" value="削除">
+            <input class="key_reset" type="button" value="リセット">
+          </div>
+          <div class="item_title">
+            右移動
+          </div>
+          <div class="item_body">
+            <input class="key_list" type="text" value="d" readonly id="setting_right_move">
+            <input class="key_register" type="button" value="追加登録">
+            <input class="key_delete" type="button" value="削除">
+            <input class="key_reset" type="button" value="リセット">
+          </div>
+          <div class="item_title">
+            左(反時計)回転
+          </div>
+          <div class="item_body">
+            <input class="key_list" type="text" value="q" readonly id="setting_left_rotate">
+            <input class="key_register" type="button" value="追加登録">
+            <input class="key_delete" type="button" value="削除">
+            <input class="key_reset" type="button" value="リセット">
+          </div>
+          <div class="item_title">
+            右(時計)回転
+          </div>
+          <div class="item_body">
+            <input class="key_list" type="text" value="e" readonly id="setting_right_rotate">
+            <input class="key_register" type="button" value="追加登録">
+            <input class="key_delete" type="button" value="削除">
+            <input class="key_reset" type="button" value="リセット">
+          </div>
+          <div class="item_title">
+            ソフトドロップ
+          </div>
+          <div class="item_body">
+            <input class="key_list" type="text" value="s" readonly id="setting_soft_drop">
+            <input class="key_register" type="button" value="追加登録">
+            <input class="key_delete" type="button" value="削除">
+            <input class="key_reset" type="button" value="リセット">
+          </div>
+          <div class="item_title">
+            ハードドロップ
+          </div>
+          <div class="item_body">
+            <input class="key_list" type="text" value="Space" readonly id="setting_hard_drop">
+            <input class="key_register" type="button" value="追加登録">
+            <input class="key_delete" type="button" value="削除">
+            <input class="key_reset" type="button" value="リセット">
+          </div>
+          <div class="item_title">
+            ホールド
+          </div>
+          <div class="item_body">
+            <input class="key_list" type="text" value="Shift" readonly id="setting_hold">
+            <input class="key_register" type="button" value="追加登録">
+            <input class="key_delete" type="button" value="削除">
+            <input class="key_reset" type="button" value="リセット">
+          </div>
+          <div class="item_title">
+            開始/一時停止/再開
+          </div>
+          <div class="item_body">
+            <input class="key_list" type="text" value="f" readonly id="setting_start_pause_resume">
+            <input class="key_register" type="button" value="追加登録">
+            <input class="key_delete" type="button" value="削除">
+            <input class="key_reset" type="button" value="リセット">
+          </div>
+          
+        </div>
+        <div class="setting_buttons">
+          <div class="button" id="setting_decide_btn">決定</div>
+          <div class="button" id="setting_cancel_btn">キャンセル</div>
+        </div>
+      </div>
+    </div>
+    <div class="game_over_wrap" id="game_over_wrap">
+      <div class="game_over_area">
+        <div class="game_over_title">
+          <span class="game_over_label">Game Over</span>
+        </div>
+        <div class="game_over_content">
+          <div class="game_over_data">
+            <div class="">レベル:</div>
+            <div class="" id="game_over_level">1</div>
+            <div class="">スコア:</div>
+            <div class="" id="game_over_score">0</div>
+            <div class="">タイム:</div>
+            <div class="" id="game_over_time">00:00:00.000</div>
+          </div>
+          <div class="game_over_log">
+            <div class="game_over_log_title">
+              ゲームログ
+            </div>
+            <textarea class="game_over_log_body" id="game_over_log_body" readonly></textarea>
+          </div>
+        </div>
+        <div class="close_btn_area">
+          <div class="close_btn" id="game_over_close"></div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="script.js"></script>
+  </body>
+</html>
