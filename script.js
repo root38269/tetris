@@ -22,6 +22,8 @@ const next_number = 6;
 
 /**@type {[[HTMLDivElement]]} */
 let div_cells = [];
+/**@type {[[HTMLDivElement]]} */
+let div_cell_borders = [];
 /**@type {[[[HTMLDivElement]]]} */
 let next_cells = [];
 /**@type {[[HTMLDivElement]]} */
@@ -37,34 +39,42 @@ let keys_hold = new Set(["Shift"]);
 let keys_start_pause_resume = new Set(["f"]);
 
 
-// TODO: ゲームオーバー画面の実装
-//       T-spin, BTB, REN の実装
+// TODO: T-spin, BTB, REN の実装
+//       auto repeat の実装
 
 
 function init () {
   for (let i = 0; i <= 24; i++) {
     let div_cell_row = [];
+    let div_cell_border_row = [];
     let cell_status_row = [];
     let cell_color_row = [];
     for (let j = 0; j <= 11; j++) {
+      let my_cell_border = document.createElement("div");
+      my_cell_border.classList.add("cell_border");
+      if (i <= 0 || i >= 22 || j <= 0 || j >= 11) {
+        my_cell_border.style.display = "none";
+      }else{
+        my_cell_border.style.gridRow = String(22 - i);
+        my_cell_border.style.gridColumn = String(j);
+      }
+      if (i === 21) {
+        my_cell_border.style.borderTopStyle = "none";
+      }
+      div_cell_border_row.push(my_cell_border);
+      
       let my_cell = document.createElement("div");
       my_cell.classList.add("cell");
       my_cell.id = "cell_" + i + "_" + j;
-      if (i <= 0 || i >= 22 || j <= 0 || j >= 11) {
-        my_cell.style.display = "none";
-      }else{
-        my_cell.style.gridRow = String(22 - i);
-        my_cell.style.gridColumn = String(j);
-      }
-      if (i === 21) {
-        my_cell.style.borderTopStyle = "none";
-      }
       div_cell_row.push(my_cell);
-      div_content.appendChild(my_cell);
+
+      my_cell_border.appendChild(my_cell);
+      div_content.appendChild(my_cell_border);
       cell_status_row.push("none");
       cell_color_row.push("none");
     }
     div_cells.push(div_cell_row);
+    div_cell_borders.push(div_cell_border_row);
     cell_status.push(cell_status_row);
     cell_color.push(cell_color_row);
   }
@@ -74,13 +84,17 @@ function init () {
     for (let i = 0; i < 2; i++) {
       let my_next_row = [];
       for (let j = 0; j < 4; j++) {
+        let target_div_border = document.createElement("div");
+        target_div_border.classList.add("cell_border");
+        target_div_border.style.gridRow = String(2 - i);
+        target_div_border.style.gridColumn = String(j + 1);
+
         let target_div = document.createElement("div");
         target_div.classList.add("cell");
         target_div.id = "next_" + num + "_" + i + "_" + j;
-        target_div.style.gridRow = String(2 - i);
-        target_div.style.gridColumn = String(j + 1);
         my_next_row.push(target_div);
-        target_next.appendChild(target_div);
+        target_div_border.appendChild(target_div)
+        target_next.appendChild(target_div_border);
       }
       my_next_cells.push(my_next_row);
     }
@@ -89,13 +103,17 @@ function init () {
   for (let i = 0; i < 4; i++) {
     let my_hold_row = [];
     for (let j = 0; j < 4; j++) {
+      let target_div_border = document.createElement("div");
+      target_div_border.classList.add("cell_border");
+      target_div_border.style.gridRow = String(4 - i);
+      target_div_border.style.gridColumn = String(j + 1);
+      
       let target_div = document.createElement("div");
       target_div.classList.add("cell");
       target_div.id = "hold_" + i + "_" + j;
-      target_div.style.gridRow = String(4 - i);
-      target_div.style.gridColumn = String(j + 1);
       my_hold_row.push(target_div);
-      div_hold.appendChild(target_div);
+      target_div_border.appendChild(target_div);
+      div_hold.appendChild(target_div_border);
     }
     hold_cells.push(my_hold_row);
   }
@@ -159,6 +177,25 @@ function init () {
   div_game_over_show.addEventListener("click", game_over_show);
   div_setting.addEventListener("click", function (event) {
     setting_show();
+  });
+
+  window.addEventListener("blur", function (event) {
+    if (game_status === "dropping" || game_status === "juding" || game_status === "rolling") {
+      let current_time = new Date().getTime();
+      if (resume_time + 5000 > current_time) {
+        setTimeout(() => {
+          if (!document.hasFocus()) {
+            no_pause_message = true;
+            pause_request();
+            add_message("ウィンドウが非アクティブになったため、一時停止しました。");
+          }
+        }, resume_time + 5100 - current_time);
+      }else{
+        no_pause_message = true;
+        pause_request();
+        add_message("ウィンドウが非アクティブになったため、一時停止しました。");
+      }
+    }
   });
 }
 
@@ -747,6 +784,7 @@ let next_drop_interval_time = 0;
 let old_game_status;
 let pause_time;
 let resume_time;
+let no_pause_message = false;
 function pause () {
   if (game_status === "dropping" || game_status === "rolling") {
     let current_time = new Date().getTime();
@@ -771,7 +809,12 @@ function pause () {
     div_pause.style.display = "none";
     div_resume.style.display = null;
     div_reset.style.display = null;
-    add_message("一時停止しました。");
+    if (no_pause_message) {
+      no_pause_message = false;
+    }else{
+      add_message("一時停止しました。");
+    }
+    
   }
 }
 
@@ -1278,12 +1321,12 @@ function reflect_hold () {
 function reflect_ghost () {
   for (let i = 0; i <= 24; i++) {
     for (let j = 0; j <= 11; j++) {
-      div_cells[i][j].classList.remove("ghost");
+      div_cell_borders[i][j].classList.remove("ghost");
     }
   }
   if (ghost_pos.length < 4) return;
   for (let i = 0; i < 4; i++) {
-    div_cells[ghost_pos[i][0]][ghost_pos[i][1]].classList.add("ghost");
+    div_cell_borders[ghost_pos[i][0]][ghost_pos[i][1]].classList.add("ghost");
   }
 }
 function reflect_reset () {
@@ -1306,7 +1349,7 @@ function reflect_reset () {
   }
   for (let i = 0; i <= 24; i++) {
     for (let j = 0; j <= 11; j++) {
-      div_cells[i][j].classList.remove("ghost");
+      div_cell_borders[i][j].classList.remove("ghost");
     }
   }
   div_level.innerText = String(level);
