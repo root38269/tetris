@@ -192,35 +192,67 @@ body {
 
   border: 0.5px solid #aaa;
 }
-.cell {
-  border: 0.5px solid #aaa;
-  background-color: #fff;
+.cell_border {
+  position: relative;
+
+  /*border: 0.5px solid #ddd;*/
+  
+  box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.2);
+  background-color: rgba(0,0,0,0);
 }
+.cell {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  border-style: solid;
+  border-width: calc(var(--cell-size) * 0.17);
+  border-color: rgba(0,0,0,0);
+
+  z-index: -1;
+
+  --block-border-color: rgba(255,255,255,0.5) rgba(0,0,0,0.2) rgba(0,0,0,0.2) rgba(255,255,255,0.5);
+  --block-border-color-light: rgba(255,255,255,0.7) rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(255,255,255,0.7);
+  --block-border-color-dark: rgba(255,255,255,0.4) rgba(0,0,0,0.3) rgba(0,0,0,0.3) rgba(255,255,255,0.4);
+  box-shadow: inset ;
+}
+
 .cell.cyan {
   background-color: cyan;
+  border-color: var(--block-border-color-light);
 }
 .cell.blue {
   background-color: blue;
+  border-color: var(--block-border-color);
 }
 .cell.orange {
   background-color: orange;
+  border-color: var(--block-border-color);
 }
 .cell.yellow {
   background-color: yellow;
+  border-color: var(--block-border-color-light);
 }
 .cell.red {
   background-color: red;
+  border-color: var(--block-border-color);
 }
 .cell.green {
   background-color: green;
+  border-color: var(--block-border-color-dark);
 }
 .cell.purple {
   background-color: purple;
+  border-color: var(--block-border-color-dark);
 }
-.cell.ghost {
+.cell_border.ghost {
   box-shadow: inset 0px 0px calc(var(--cell-size) * 0.1) calc(var(--cell-size) * 0.1) rgba(0, 10, 195, 0.27);
+  box-shadow: inset 0px 0px calc(var(--cell-size) * 0.3) calc(var(--cell-size) * 0.1) rgba(143, 148, 247, 0.7);
+  
 }
-.no_ghost .cell.ghost {
+.no_ghost .cell_border.ghost {
   box-shadow: none;
 }
 
